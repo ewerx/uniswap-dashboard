@@ -1,0 +1,35 @@
+query Transactions(
+  $first: Int = 100
+  $skip: Int = 0
+  $orderBy: Transaction_orderBy = timestamp
+  $orderDirection: OrderDirection = desc
+  $where: Transaction_filter = {}
+) {
+  transactions(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+  ) {
+    swaps {
+      amount0
+      amount1
+      amountUSD
+      sender
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      pool {
+        id
+      }
+    }
+    id
+    timestamp
+  }
+}

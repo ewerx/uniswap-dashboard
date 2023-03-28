@@ -1,0 +1,19 @@
+query Tokens(
+  $first: Int = 100
+  $skip: Int = 0
+  $orderBy: Token_orderBy = totalValueLockedUSD
+  $orderDirection: OrderDirection = desc
+) {
+  tokens(
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    symbol
+    name
+    totalValueLockedUSD
+    volumeUSD
+  }
+}

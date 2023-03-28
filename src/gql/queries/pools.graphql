@@ -1,13 +1,16 @@
 query Pools(
-  $first: Int = 1
+  $first: Int = 100
   $skip: Int = 0
   $orderBy: Pool_orderBy = totalValueLockedUSD
   $orderDirection: OrderDirection = desc
+  $poolDayDataCount: Int = 1
+  $poolDayDataOrderBy: PoolDayData_orderBy = date
+  $poolDayDataOrderDirection: OrderDirection = desc
 ) {
   pools(
-    orderBy: $orderBy
     first: $first
     skip: $skip
+    orderBy: $orderBy
     orderDirection: $orderDirection
   ) {
     id
@@ -20,8 +23,19 @@ query Pools(
       name
     }
     totalValueLockedUSD
-    poolDayData(first: 2, skip: 0, orderBy: date, orderDirection: desc) {
+    volumeUSD
+    poolDayData(
+      first: $poolDayDataCount
+      orderBy: $poolDayDataOrderBy
+      orderDirection: $poolDayDataOrderDirection
+    ) {
+      date
+      open
+      close
+      low
+      high
       volumeUSD
+      tvlUSD
     }
   }
 }
