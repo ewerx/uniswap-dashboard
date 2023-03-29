@@ -1,5 +1,5 @@
 import { PoolsDocument, PoolsQuery } from "@/gql/generated/graphql";
-import { formatCurrency } from "@/utils/number";
+import { formatCurrency } from "@/utils/format";
 import { tokenIconUrl } from "@/utils/tokenIcon";
 import { useQuery } from "@apollo/client";
 import {
@@ -30,6 +30,7 @@ const PoolsTable = () => {
       skip: 0,
       orderBy: "totalValueLockedUSD",
       orderDirection: "desc",
+      poolDayDataCount: 2,
     },
   });
 
@@ -85,7 +86,9 @@ const PoolsTable = () => {
             <Table.Cell>
               {formatCurrency(pool.totalValueLockedUSD, "USD")}
             </Table.Cell>
-            <Table.Cell>{formatCurrency(pool.volumeUSD, "USD")}</Table.Cell>
+            <Table.Cell>
+              {formatCurrency(pool.poolDayData[1].volumeUSD, "USD")}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

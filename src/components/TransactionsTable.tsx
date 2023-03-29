@@ -2,22 +2,42 @@ import {
   TransactionsDocument,
   TransactionsQuery,
 } from "@/gql/generated/graphql";
-import { formatCurrency } from "@/utils/number";
+import {
+  flattenTransactions,
+  TransactionData,
+  TransactionType,
+} from "@/model/transaction";
+import { addressUrl, transactionUrl } from "@/utils/etherscan";
+import {
+  formatCurrency,
+  formatTimestamp,
+  formatTokenAmount,
+  truncateMiddle,
+} from "@/utils/format";
 import { useQuery } from "@apollo/client";
-import { Card, Container, Loading, Row, Table } from "@nextui-org/react";
+import {
+  Card,
+  Container,
+  Link,
+  Loading,
+  Row,
+  Table,
+  Text,
+} from "@nextui-org/react";
+import { TransactionTypeBadge } from "./styles/TransactionTypeBadge";
 
 const TransactionsTable = () => {
   const { data, loading, fetchMore } = useQuery<TransactionsQuery>(
     TransactionsDocument,
     {
       variables: {
-        first: 10,
+        first: 100,
         skip: 0,
       },
     }
   );
 
-  const transactions = data?.transactions || [];
+  const transactions = data ? flattenTransactions(data) : [];
 
   const loadMore = () => {
     fetchMore({
@@ -33,10 +53,62 @@ const TransactionsTable = () => {
   };
 
   const columns = [
-    { uid: "timestamp", name: "Timestamp" },
-    { uid: "swap", name: "Swap" },
+    { uid: "type", name: "Type" },
+    { uid: "tokens", name: "Tokens" },
     { uid: "amount", name: "Amount (USD)" },
+    { uid: "sender", name: "Sender" },
+    { uid: "timestamp", name: "Timestamp" },
   ];
+
+  const renderTransactionDetails = (tx: TransactionData) => {
+    switch (tx.type) {
+      case TransactionType.SWAP:
+        const inToken = tx.token0.amount < 0 ? tx.token0 : tx.token1;
+        const outToken = tx.token0.amount < 0 ? tx.token1 : tx.token0;
+
+        return (
+          <>
+            <Text small size={16}>
+              {formatTokenAmount(outToken.amount)}{" "}
+            </Text>
+            <Text small size={16} color="$accents7">
+              {outToken.symbol}
+            </Text>
+            <Text small size={16} color="$accents8">
+              {" → "}
+            </Text>
+            <Text small size={16}>
+              {formatTokenAmount(inToken.amount)}{" "}
+            </Text>
+            <Text small size={16} color="$accents7">
+              {inToken.symbol}
+            </Text>
+          </>
+        );
+
+      case TransactionType.MINT: //passthrough
+      case TransactionType.BURN:
+        return (
+          <>
+            <Text small size={16}>
+              {formatTokenAmount(tx.token0.amount)}{" "}
+            </Text>
+            <Text small size={16} color="$accents7">
+              {tx.token0.symbol}
+            </Text>
+            <Text small size={16} color="$accents8">
+              {" + "}
+            </Text>
+            <Text small size={16}>
+              {formatTokenAmount(tx.token1.amount)}{" "}
+            </Text>
+            <Text small size={16} color="$accents7">
+              {tx.token1.symbol}
+            </Text>
+          </>
+        );
+    }
+  };
 
   return loading ? (
     <Container>
@@ -63,18 +135,26 @@ const TransactionsTable = () => {
       </Table.Header>
       <Table.Body>
         {transactions.map((transaction) => (
-          <Table.Row key={transaction.id}>
-            <Table.Cell>{transaction.timestamp}</Table.Cell>
+          <Table.Row key={transaction.hash}>
             <Table.Cell>
-              {transaction.swaps[0]?.token0.symbol}-
-              {transaction.swaps[0]?.token1.symbol}
+              <TransactionTypeBadge type={transaction.type} />
+            </Table.Cell>
+            <Table.Cell>{renderTransactionDetails(transaction)}</Table.Cell>
+            <Table.Cell>{formatCurrency(transaction.amountUSD)}</Table.Cell>
+            <Table.Cell>
+              <Link href={addressUrl(transaction.sender)} target="_blank">
+                {truncateMiddle(transaction.sender)}
+              </Link>
             </Table.Cell>
             <Table.Cell>
-              {formatCurrency(transaction.swaps[0]?.amountUSD)}
+              <Link href={transactionUrl(transaction.hash)} target="_blank">
+                {formatTimestamp(transaction.timestamp)}
+              </Link>
             </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
+      <Table.Pagination rowsPerPage={10} align="center" noMargin />
     </Table>
   );
 };

@@ -1,5 +1,5 @@
 import { TokensDocument, TokensQuery } from "@/gql/generated/graphql";
-import { formatCurrency } from "@/utils/number";
+import { formatCurrency } from "@/utils/format";
 import { tokenIconUrl } from "@/utils/tokenIcon";
 import { useQuery } from "@apollo/client";
 import {

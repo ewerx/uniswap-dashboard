@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
 import { type ReactNode } from "react";
-import { IoSunny, IoMoon } from "react-icons/io5";
+import { IoSunny, IoMoon, IoRefreshCircle, IoRefresh } from "react-icons/io5";
 import { Box } from "./styles/Box";
 import { useRouter } from "next/router";
 
@@ -47,6 +47,11 @@ export default function Layout({ children }: LayoutProps) {
           <Text h3>Uniswap Dashboard</Text>
         </Navbar.Brand>
         <Navbar.Content>
+          <Button
+            auto
+            iconRight={<IoRefresh />}
+            onClick={() => window.location.reload()}
+          />
           <Switch
             id="theme-switch"
             onChange={(e) => setTheme(e.target.checked ? "dark" : "light")}
