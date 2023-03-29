@@ -8,6 +8,7 @@ const config: CodegenConfig = {
     "src/gql/generated/": {
       preset: "client",
       presetConfig: {
+        ignoreNoDocuments: true,
         useTypeImports: true,
       },
       plugins: [],

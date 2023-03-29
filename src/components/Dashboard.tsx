@@ -1,4 +1,4 @@
-import { Grid } from "@nextui-org/react";
+import { Container, Grid, Text } from "@nextui-org/react";
 import ClientOnly from "./ClientOnly";
 import PoolsTable from "./PoolsTable";
 import TokensTable from "./TokensTable";
@@ -9,13 +9,22 @@ const Dashboard = () => {
     <ClientOnly>
       <Grid.Container gap={2}>
         <Grid xs={12} md={6}>
-          <TokensTable />
+          <Container>
+            <Text h5>Tokens</Text>
+            <TokensTable />
+          </Container>
         </Grid>
         <Grid xs={12} md={6}>
-          <PoolsTable />
+          <Container>
+            <Text h5>Pools</Text>
+            <PoolsTable />
+          </Container>
         </Grid>
         <Grid xs={12}>
-          <TransactionsTable />
+          <Container>
+            <Text h5>Transactions</Text>
+            <TransactionsTable />
+          </Container>
         </Grid>
       </Grid.Container>
     </ClientOnly>

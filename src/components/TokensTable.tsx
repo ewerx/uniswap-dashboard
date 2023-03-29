@@ -1,4 +1,5 @@
 import { TokensDocument, TokensQuery } from "@/gql/generated/graphql";
+import { formatCurrency } from "@/utils/number";
 import { useQuery } from "@apollo/client";
 import { Card, Container, Loading, Row, Table } from "@nextui-org/react";
 
@@ -59,8 +60,8 @@ const TokensTable = () => {
           <Table.Row key={token.id}>
             <Table.Cell>{token.name}</Table.Cell>
             <Table.Cell>{token.symbol}</Table.Cell>
-            <Table.Cell>{token.totalValueLockedUSD}</Table.Cell>
-            <Table.Cell>{token.volumeUSD}</Table.Cell>
+            <Table.Cell>{formatCurrency(token.totalValueLockedUSD)}</Table.Cell>
+            <Table.Cell>{formatCurrency(token.volumeUSD)}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

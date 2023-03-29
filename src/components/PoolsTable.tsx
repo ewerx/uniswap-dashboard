@@ -1,4 +1,5 @@
 import { PoolsDocument, PoolsQuery } from "@/gql/generated/graphql";
+import { formatCurrency } from "@/utils/number";
 import { useQuery } from "@apollo/client";
 import { Card, Container, Loading, Row, Table } from "@nextui-org/react";
 
@@ -59,8 +60,10 @@ const PoolsTable = () => {
             <Table.Cell>
               {pool.token0.symbol}/{pool.token1.symbol}
             </Table.Cell>
-            <Table.Cell>{pool.totalValueLockedUSD}</Table.Cell>
-            <Table.Cell>{pool.volumeUSD}</Table.Cell>
+            <Table.Cell>
+              {formatCurrency(pool.totalValueLockedUSD, "USD")}
+            </Table.Cell>
+            <Table.Cell>{formatCurrency(pool.volumeUSD, "USD")}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

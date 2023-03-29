@@ -2,6 +2,7 @@ import {
   TransactionsDocument,
   TransactionsQuery,
 } from "@/gql/generated/graphql";
+import { formatCurrency } from "@/utils/number";
 import { useQuery } from "@apollo/client";
 import { Card, Container, Loading, Row, Table } from "@nextui-org/react";
 
@@ -68,7 +69,9 @@ const TransactionsTable = () => {
               {transaction.swaps[0]?.token0.symbol}-
               {transaction.swaps[0]?.token1.symbol}
             </Table.Cell>
-            <Table.Cell>{transaction.swaps[0]?.amountUSD}</Table.Cell>
+            <Table.Cell>
+              {formatCurrency(transaction.swaps[0]?.amountUSD)}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
