@@ -1,33 +1,43 @@
 import { TokensDocument, TokensQuery } from "@/gql/generated/graphql";
 import { formatCurrency } from "@/utils/number";
+import { tokenIconUrl } from "@/utils/tokenIcon";
 import { useQuery } from "@apollo/client";
-import { Card, Container, Loading, Row, Table } from "@nextui-org/react";
+import {
+  Avatar,
+  Card,
+  Col,
+  Container,
+  Loading,
+  Row,
+  Table,
+  Text,
+} from "@nextui-org/react";
+
+// from https://github.com/Uniswap/v3-info/blob/master/src/constants/index.ts
+const HIDDEN_TOKENS = [
+  "0xd46ba6d942050d489dbd938a2c909a5d5039a161",
+  "0x7dfb72a2aad08c937706f21421b15bfc34cba9ca",
+  "0x12b32f10a499bf40db334efe04226cca00bf2d9b",
+  "0x160de4468586b6b2f8a92feb0c260fc6cfc743b1",
+];
 
 const TokensTable = () => {
   const { data, loading, fetchMore } = useQuery<TokensQuery>(TokensDocument, {
     variables: {
-      first: 10,
+      first: 100,
       skip: 0,
       orderBy: "totalValueLockedUSD",
       orderDirection: "desc",
     },
   });
 
-  const tokens = data?.tokens || [];
-
-  const loadMore = () => {
-    fetchMore({
-      variables: { first: 10, skip: tokens.length },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return { ...prev, tokens: [...prev.tokens, ...fetchMoreResult.tokens] };
-      },
-    });
-  };
+  const tokens =
+    data?.tokens.filter((token) => !HIDDEN_TOKENS.includes(token.id)) || [];
 
   const columns = [
+    { uid: "rank", name: "" },
+    { uid: "icon", name: "" },
     { uid: "name", name: "Name" },
-    { uid: "symbol", name: "Symbol" },
     { uid: "totalValueLockedUSD", name: "TVL (USD)" },
     { uid: "volumeUSD", name: "Volume (USD)" },
   ];
@@ -56,15 +66,27 @@ const TokensTable = () => {
         )}
       </Table.Header>
       <Table.Body>
-        {tokens.map((token) => (
+        {tokens.map((token, index) => (
           <Table.Row key={token.id}>
-            <Table.Cell>{token.name}</Table.Cell>
-            <Table.Cell>{token.symbol}</Table.Cell>
+            <Table.Cell>{index + 1}</Table.Cell>
+            <Table.Cell>
+              <Avatar size="xs" src={tokenIconUrl(token.id)} />
+            </Table.Cell>
+            <Table.Cell>
+              <Text small size={16}>
+                {token.name}
+                {"   "}
+              </Text>
+              <Text small size={16} color="$accents5">
+                ({token.symbol})
+              </Text>
+            </Table.Cell>
             <Table.Cell>{formatCurrency(token.totalValueLockedUSD)}</Table.Cell>
             <Table.Cell>{formatCurrency(token.volumeUSD)}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
+      <Table.Pagination rowsPerPage={10} align="center" noMargin />
     </Table>
   );
 };

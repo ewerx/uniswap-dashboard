@@ -15,10 +15,12 @@ query Pools(
   ) {
     id
     token0 {
+      id
       symbol
       name
     }
     token1 {
+      id
       symbol
       name
     }
