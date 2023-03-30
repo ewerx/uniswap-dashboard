@@ -33,24 +33,22 @@ export const transactionsFromQuery = (data: TransactionsQuery) => {
         if (swap === null) {
           return [];
         }
-        console.log(tx.timestamp);
-        console.log(swap.timestamp);
         return {
           type: TransactionType.SWAP,
-          hash: swap.id,
+          hash: tx.id,
           timestamp: unixToDate(swap.timestamp),
           sender: swap.origin,
           token0: {
             address: swap.token0.id,
             symbol: swap.token0.symbol,
             amount: swap.amount0,
-            decimals: swap.token0.decimals,
+            decimals: parseInt(swap.token0.decimals),
           },
           token1: {
             address: swap.token1.id,
             symbol: swap.token1.symbol,
             amount: swap.amount1,
-            decimals: swap.token1.decimals,
+            decimals: parseInt(swap.token1.decimals),
           },
           amountUSD: swap.amountUSD,
         };
@@ -61,20 +59,20 @@ export const transactionsFromQuery = (data: TransactionsQuery) => {
         }
         return {
           type: TransactionType.MINT,
-          hash: mint.id,
+          hash: tx.id,
           timestamp: unixToDate(mint.timestamp),
           sender: mint.origin,
           token0: {
             address: mint.token0.id,
             symbol: mint.token0.symbol,
             amount: mint.amount0,
-            decimals: mint.token0.decimals,
+            decimals: parseInt(mint.token0.decimals),
           },
           token1: {
             address: mint.token1.id,
             symbol: mint.token1.symbol,
             amount: mint.amount1,
-            decimals: mint.token1.decimals,
+            decimals: parseInt(mint.token1.decimals),
           },
           amountUSD: mint.amountUSD,
         };
@@ -85,20 +83,20 @@ export const transactionsFromQuery = (data: TransactionsQuery) => {
         }
         return {
           type: TransactionType.BURN,
-          hash: burn.id,
+          hash: tx.id,
           timestamp: unixToDate(burn.timestamp),
           sender: burn.origin,
           token0: {
             address: burn.token0.id,
             symbol: burn.token0.symbol,
             amount: burn.amount0,
-            decimals: burn.token0.decimals,
+            decimals: parseInt(burn.token0.decimals),
           },
           token1: {
             address: burn.token1.id,
             symbol: burn.token1.symbol,
             amount: burn.amount1,
-            decimals: burn.token1.decimals,
+            decimals: parseInt(burn.token1.decimals),
           },
           amountUSD: burn.amountUSD,
         };

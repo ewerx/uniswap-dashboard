@@ -3,9 +3,7 @@ query Pools(
   $skip: Int = 0
   $orderBy: Pool_orderBy = totalValueLockedUSD
   $orderDirection: OrderDirection = desc
-  $poolDayDataCount: Int = 1
-  $poolDayDataOrderBy: PoolDayData_orderBy = date
-  $poolDayDataOrderDirection: OrderDirection = desc
+  $poolDayDataCount: Int = 2
 ) {
   pools(
     first: $first
@@ -26,11 +24,7 @@ query Pools(
     }
     totalValueLockedUSD
     volumeUSD
-    poolDayData(
-      first: $poolDayDataCount
-      orderBy: $poolDayDataOrderBy
-      orderDirection: $poolDayDataOrderDirection
-    ) {
+    poolDayData(first: $poolDayDataCount, orderBy: date, orderDirection: desc) {
       date
       open
       close

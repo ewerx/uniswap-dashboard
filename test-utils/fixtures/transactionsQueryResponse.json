@@ -1,0 +1,91 @@
+{
+  "transactions": [
+    {
+      "id": "0xf979c8898d6f4c7bc209ab5f7307f61532908b7b1f428f93b1b49488b52c85bf",
+      "timestamp": "1680139043",
+      "swaps": [
+        {
+          "id": "0xf979c8898d6f4c7bc209ab5f7307f61532908b7b1f428f93b1b49488b52c85bf#68157",
+          "timestamp": "1680139043",
+          "origin": "0xadbe190d8557eec6710a224d8ea0c9b64a04bc1d",
+          "amountUSD": "1608.208338001980864900478353160687",
+          "amount0": "-1216020330.048407053731570356",
+          "amount1": "0.900041658637447965",
+          "token0": {
+            "id": "0x06450dee7fd2fb8e39061434babcfc05599a6fb8",
+            "symbol": "XEN",
+            "decimals": "18"
+          },
+          "token1": {
+            "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            "symbol": "WETH",
+            "decimals": "18"
+          },
+          "pool": {
+            "id": "0x2a9d2ba41aba912316d16742f259412b681898db"
+          }
+        }
+      ],
+      "mints": [],
+      "burns": []
+    },
+    {
+      "id": "0xef90fe192b90ee33cec063d6e6ccac9c4901a7a34005405bfaaed09b4293e101",
+      "timestamp": "1680140867",
+      "swaps": [],
+      "mints": [
+        {
+          "id": "0xef90fe192b90ee33cec063d6e6ccac9c4901a7a34005405bfaaed09b4293e101#330622",
+          "timestamp": "1680140867",
+          "origin": "0xdd8ef55055e01d39cb87571bd38c43ab9b5903a5",
+          "amountUSD": "6838836.618376278191531629734942729",
+          "amount0": "56883.925367493262",
+          "amount1": "3694.403860478415333238",
+          "token0": {
+            "id": "0x4d224452801aced8b2f0aebe155379bb5d594381",
+            "symbol": "APE",
+            "decimals": "18"
+          },
+          "token1": {
+            "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            "symbol": "WETH",
+            "decimals": "18"
+          },
+          "pool": {
+            "id": "0xac4b3dacb91461209ae9d41ec517c2b9cb1b7daf"
+          }
+        }
+      ],
+      "burns": []
+    },
+    {
+      "id": "0xba9bbb08e4574206dd9d47b5fb15c0e05a925bf53502f8583a006413b3896ade",
+      "timestamp": "1680140687",
+      "swaps": [],
+      "mints": [],
+      "burns": [
+        {
+          "id": "0xba9bbb08e4574206dd9d47b5fb15c0e05a925bf53502f8583a006413b3896ade#206427",
+          "timestamp": "1680140687",
+          "origin": "0x4e78adc87f5f5fe1539a15735789cb356c5f44c4",
+          "amountUSD": "10256.96744280206809764875885665914",
+          "amount0": "0.18092984",
+          "amount1": "2.872547564740240762",
+          "token0": {
+            "id": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+            "symbol": "WBTC",
+            "decimals": "8"
+          },
+          "token1": {
+            "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            "symbol": "WETH",
+            "decimals": "18"
+          },
+          "pool": {
+            "id": "0xcbcdf9626bc03e24f779434178a73a0b4bad62ed"
+          }
+        }
+      ]
+    }
+  ]
+}
