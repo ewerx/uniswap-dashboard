@@ -1,3 +1,11 @@
+// Utility functions for formatting various data types
+
+/**
+ * Format a number as a currency string.
+ * @param {number} amount - The amount to format.
+ * @param {string} [currency="USD"] - The currency code to use (e.g., "USD").
+ * @returns {string} The formatted currency string.
+ */
 export const formatCurrency = (amount: number, currency = "USD") => {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -9,6 +17,11 @@ export const formatCurrency = (amount: number, currency = "USD") => {
   return formatter.format(amount);
 };
 
+/**
+ * Format a number as a percentage string.
+ * @param {number} amount - The amount to format.
+ * @returns {string} The formatted percentage string.
+ */
 export const formatPercent = (amount: number) => {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "percent",
@@ -19,6 +32,11 @@ export const formatPercent = (amount: number) => {
   return formatter.format(amount);
 };
 
+/**
+ * Format a bigint number using the compact notation.
+ * @param {bigint} amount - The amount to format.
+ * @returns {string} The formatted bigint string.
+ */
 export const formatTokenAmount = (amount: bigint) => {
   const absAmount = amount < 0 ? -amount : amount;
   const formatter = new Intl.NumberFormat("en-US", {
@@ -28,6 +46,11 @@ export const formatTokenAmount = (amount: bigint) => {
   return formatter.format(absAmount);
 };
 
+/**
+ * Format a timestamp as a relative time string.
+ * @param {Date} timestamp - The timestamp to format.
+ * @returns {string} The formatted relative time string.
+ */
 export const formatTimestamp = (timestamp: Date) => {
   const formatter = new Intl.RelativeTimeFormat("en", {
     style: "narrow",
@@ -55,6 +78,12 @@ export const formatTimestamp = (timestamp: Date) => {
   return formatter.format(-Math.floor(delta / DAY), "day");
 };
 
+/**
+ * Truncate a string in the middle with an ellipsis.
+ * @param {string} str - The string to truncate.
+ * @param {number} [length=10] - The maximum length of the truncated string.
+ * @returns {string} The truncated string.
+ */
 export const truncateMiddle = (str: string, length = 10) => {
   if (str.length <= length) {
     return str;
