@@ -15,44 +15,22 @@ import {
   truncateMiddle,
 } from "@/utils/format";
 import { useQuery } from "@apollo/client";
-import {
-  Card,
-  Container,
-  Link,
-  Loading,
-  Row,
-  Table,
-  Text,
-  Tooltip,
-} from "@nextui-org/react";
-import { TransactionTypeBadge } from "./styles/TransactionTypeBadge";
+import { Link, Table, Text, Tooltip } from "@nextui-org/react";
+import TableLoading from "./TableLoading";
+import { TransactionTypeBadge } from "./TransactionTypeBadge";
 
 const TransactionsTable = () => {
-  const { data, loading, fetchMore } = useQuery<TransactionsQuery>(
-    TransactionsDocument,
-    {
-      variables: {
-        first: 100,
-        skip: 0,
-      },
-    }
-  );
+  // Fetch token data from the API
+  const { data, loading } = useQuery<TransactionsQuery>(TransactionsDocument, {
+    variables: {
+      first: 100,
+      skip: 0,
+    },
+  });
 
   const transactions = data ? transactionsFromQuery(data) : [];
 
-  const loadMore = () => {
-    fetchMore({
-      variables: { first: 10, skip: transactions.length },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return {
-          ...prev,
-          transactions: [...prev.transactions, ...fetchMoreResult.transactions],
-        };
-      },
-    });
-  };
-
+  // Define table columns
   const columns = [
     { uid: "type", name: "Type" },
     { uid: "tokens", name: "Tokens" },
@@ -61,6 +39,7 @@ const TransactionsTable = () => {
     { uid: "timestamp", name: "Timestamp" },
   ];
 
+  // Render transaction details cell based on type
   const renderTransactionDetails = (tx: TransactionData) => {
     switch (tx.type) {
       case TransactionType.SWAP:
@@ -111,16 +90,9 @@ const TransactionsTable = () => {
     }
   };
 
+  // Render the loading state or the table with data
   return loading ? (
-    <Container>
-      <Card css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}>
-        <Card.Body>
-          <Row justify="center" align="center" fluid>
-            <Loading type="points-opacity" />
-          </Row>
-        </Card.Body>
-      </Card>
-    </Container>
+    <TableLoading />
   ) : (
     <Table
       bordered

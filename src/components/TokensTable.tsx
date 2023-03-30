@@ -3,20 +3,12 @@ import { tokensFromQuery } from "@/model/token";
 import { formatCurrency, formatPercent } from "@/utils/format";
 import { tokenIconUrl } from "@/utils/tokenIcon";
 import { useQuery } from "@apollo/client";
-import {
-  Avatar,
-  Card,
-  Col,
-  Container,
-  Loading,
-  Row,
-  Table,
-  Text,
-} from "@nextui-org/react";
-import { render } from "react-dom";
+import { Avatar, Col, Row, Table, Text } from "@nextui-org/react";
+import TableLoading from "./TableLoading";
 
 const TokensTable = () => {
-  const { data, loading, fetchMore } = useQuery<TokensQuery>(TokensDocument, {
+  // Fetch token data from the API
+  const { data, loading } = useQuery<TokensQuery>(TokensDocument, {
     variables: {
       first: 100,
       skip: 0,
@@ -25,17 +17,19 @@ const TokensTable = () => {
     },
   });
 
+  // Process the fetched data
   const tokens = data ? tokensFromQuery(data) : [];
 
+  // Define table columns
   const columns = [
-    { uid: "rank", name: "" },
-    { uid: "icon", name: "" },
-    { uid: "name", name: "Name" },
+    { uid: "rank", name: "#" },
+    { uid: "token", name: "Token" },
     { uid: "price", name: "Price (USD)" },
     { uid: "priceChange24h", name: "24h Change" },
     { uid: "totalValueLockedUSD", name: "TVL (USD)" },
   ];
 
+  // Render the price change cell
   const renderPriceChange = (priceChange24h: number) => {
     const color =
       priceChange24h > 0
@@ -50,16 +44,9 @@ const TokensTable = () => {
     );
   };
 
+  // Render the loading state or the table with data
   return loading ? (
-    <Container>
-      <Card css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}>
-        <Card.Body>
-          <Row justify="center" align="center" fluid>
-            <Loading type="points-opacity" />
-          </Row>
-        </Card.Body>
-      </Card>
-    </Container>
+    <TableLoading />
   ) : (
     <Table
       bordered
@@ -78,16 +65,20 @@ const TokensTable = () => {
           <Table.Row key={token.address}>
             <Table.Cell>{index + 1}</Table.Cell>
             <Table.Cell>
-              <Avatar size="xs" src={tokenIconUrl(token.address)} />
-            </Table.Cell>
-            <Table.Cell>
-              <Text small size={16}>
-                {token.name}
-                {"   "}
-              </Text>
-              <Text small size={16} color="$accents5">
-                ({token.symbol})
-              </Text>
+              <Row gap={1} justify="space-evenly">
+                <Col span={1.5}>
+                  <Avatar size="xs" src={tokenIconUrl(token.address)} />
+                </Col>
+                <Col>
+                  <Text small size={16}>
+                    {token.name}
+                    {"   "}
+                  </Text>
+                  <Text small size={16} color="$accents5">
+                    ({token.symbol})
+                  </Text>
+                </Col>
+              </Row>
             </Table.Cell>
             <Table.Cell>{formatCurrency(token.priceUSD)}</Table.Cell>
             <Table.Cell>{renderPriceChange(token.priceChange24h)}</Table.Cell>

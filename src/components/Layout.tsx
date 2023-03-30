@@ -1,28 +1,26 @@
 import {
   Navbar,
   Button,
-  Loading,
   Switch,
   useTheme,
   Text,
   Spacer,
+  styled,
 } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
 import { type ReactNode } from "react";
 import { IoSunny, IoMoon, IoRefreshCircle, IoRefresh } from "react-icons/io5";
-import { Box } from "./styles/Box";
 import { useRouter } from "next/router";
 
 type LayoutProps = {
   children: ReactNode;
 };
 
-// const menuItems = [
-//   { label: "Pools", href: "/orders", key: "orders" },
-//   { label: "Tokens", href: "/tokens", key: "tokens" },
-//   { label: "Transactions", href: "/transactions", key: "wallets" },
-// ];
+const Box = styled("div", {
+  boxSizing: "border-box",
+});
 
+// Root layout and nav bar
 export default function Layout({ children }: LayoutProps) {
   const { pathname } = useRouter();
   const { setTheme } = useNextTheme();
@@ -31,18 +29,6 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <Box>
       <Navbar maxWidth="fluid" isBordered>
-        {/* <Navbar.Content enableCursorHighlight variant="highlight">
-          {menuItems.map((item) => (
-            <Navbar.Link
-              id={item.key}
-              href={item.href}
-              key={item.key}
-              isActive={pathname === item.href}
-            >
-              {item.label}
-            </Navbar.Link>
-          ))}
-        </Navbar.Content> */}
         <Navbar.Brand>
           <Text h3>Uniswap Dashboard</Text>
         </Navbar.Brand>

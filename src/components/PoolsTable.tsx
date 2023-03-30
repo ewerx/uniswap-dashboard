@@ -3,18 +3,15 @@ import { poolsFromQuery } from "@/model/pool";
 import { formatCurrency } from "@/utils/format";
 import { tokenIconUrl } from "@/utils/tokenIcon";
 import { useQuery } from "@apollo/client";
-import {
-  Avatar,
-  Card,
-  Container,
-  Grid,
-  Loading,
-  Row,
-  Table,
-} from "@nextui-org/react";
+import { Avatar, Col, Row, Table } from "@nextui-org/react";
+import TableLoading from "./TableLoading";
 
+// PoolsTable is a component to display a list of liquidity pools
+// with their respective token pairs, total value locked (TVL),
+// and trading volume in the last 24 hours.
 const PoolsTable = () => {
-  const { data, loading, fetchMore } = useQuery<PoolsQuery>(PoolsDocument, {
+  // Fetch pools data from the API
+  const { data, loading } = useQuery<PoolsQuery>(PoolsDocument, {
     variables: {
       first: 100,
       skip: 0,
@@ -24,26 +21,20 @@ const PoolsTable = () => {
     },
   });
 
+  // Process the fetched data
   const pools = data ? poolsFromQuery(data) : [];
 
+  // Define table columns
   const columns = [
-    { uid: "rank", name: "" },
-    { uid: "icon", name: "" },
+    { uid: "rank", name: "#" },
     { uid: "pool", name: "Pool" },
     { uid: "totalValueLockedUSD", name: "TVL (USD)" },
-    { uid: "volumeUSD", name: "Volume (USD)" },
+    { uid: "volumeUSD", name: "24h Volume (USD)" },
   ];
 
+  // Render the loading state or the table with data
   return loading ? (
-    <Container>
-      <Card css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}>
-        <Card.Body>
-          <Row justify="center" align="center" fluid>
-            <Loading type="points-opacity" />
-          </Row>
-        </Card.Body>
-      </Card>
-    </Container>
+    <TableLoading />
   ) : (
     <Table
       bordered
@@ -62,15 +53,17 @@ const PoolsTable = () => {
           <Table.Row key={pool.address}>
             <Table.Cell>{index + 1}</Table.Cell>
             <Table.Cell>
-              <Container gap={1}>
-                <Avatar.Group>
-                  <Avatar size="xs" src={tokenIconUrl(pool.token0.address)} />
-                  <Avatar size="xs" src={tokenIconUrl(pool.token1.address)} />
-                </Avatar.Group>
-              </Container>
-            </Table.Cell>
-            <Table.Cell>
-              {pool.token0.symbol}/{pool.token1.symbol}
+              <Row gap={1} justify="space-evenly">
+                <Col span={1.5}>
+                  <Avatar.Group>
+                    <Avatar size="xs" src={tokenIconUrl(pool.token0.address)} />
+                    <Avatar size="xs" src={tokenIconUrl(pool.token1.address)} />
+                  </Avatar.Group>
+                </Col>
+                <Col>
+                  {pool.token0.symbol}/{pool.token1.symbol}
+                </Col>
+              </Row>
             </Table.Cell>
             <Table.Cell>
               {formatCurrency(pool.totalValueLockedUSD, "USD")}

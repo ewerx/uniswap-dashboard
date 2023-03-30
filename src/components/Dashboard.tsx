@@ -4,6 +4,7 @@ import PoolsTable from "./PoolsTable";
 import TokensTable from "./TokensTable";
 import TransactionsTable from "./TransactionsTable";
 
+// Dashboard layout with table panels
 const Dashboard = () => {
   return (
     <ClientOnly>
