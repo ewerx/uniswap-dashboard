@@ -49,9 +49,11 @@ export default function Layout({ children }: LayoutProps) {
         <Navbar.Content>
           <Button
             auto
-            iconRight={<IoRefresh />}
+            icon={<IoRefresh />}
             onClick={() => window.location.reload()}
-          />
+          >
+            Refresh
+          </Button>
           <Switch
             id="theme-switch"
             onChange={(e) => setTheme(e.target.checked ? "dark" : "light")}

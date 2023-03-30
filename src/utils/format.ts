@@ -3,6 +3,17 @@ export const formatCurrency = (amount: number, currency = "USD") => {
     style: "currency",
     currency,
     notation: "compact",
+    maximumFractionDigits: amount < 1000 ? 2 : 1,
+  });
+
+  return formatter.format(amount);
+};
+
+export const formatPercent = (amount: number) => {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
   });
 
   return formatter.format(amount);

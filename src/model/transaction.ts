@@ -26,7 +26,7 @@ export type TransactionData = {
   amountUSD: number;
 };
 
-export const flattenTransactions = (data: TransactionsQuery) => {
+export const transactionsFromQuery = (data: TransactionsQuery) => {
   return data.transactions
     .map((tx) => {
       const swaps: TransactionData[] = tx.swaps.flatMap((swap) => {

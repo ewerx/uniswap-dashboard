@@ -3,7 +3,7 @@ import {
   TransactionsQuery,
 } from "@/gql/generated/graphql";
 import {
-  flattenTransactions,
+  transactionsFromQuery,
   TransactionData,
   TransactionType,
 } from "@/model/transaction";
@@ -23,6 +23,7 @@ import {
   Row,
   Table,
   Text,
+  Tooltip,
 } from "@nextui-org/react";
 import { TransactionTypeBadge } from "./styles/TransactionTypeBadge";
 
@@ -37,7 +38,7 @@ const TransactionsTable = () => {
     }
   );
 
-  const transactions = data ? flattenTransactions(data) : [];
+  const transactions = data ? transactionsFromQuery(data) : [];
 
   const loadMore = () => {
     fetchMore({
@@ -142,9 +143,11 @@ const TransactionsTable = () => {
             <Table.Cell>{renderTransactionDetails(transaction)}</Table.Cell>
             <Table.Cell>{formatCurrency(transaction.amountUSD)}</Table.Cell>
             <Table.Cell>
-              <Link href={addressUrl(transaction.sender)} target="_blank">
-                {truncateMiddle(transaction.sender)}
-              </Link>
+              <Tooltip content={transaction.sender}>
+                <Link href={addressUrl(transaction.sender)} target="_blank">
+                  {truncateMiddle(transaction.sender)}
+                </Link>
+              </Tooltip>
             </Table.Cell>
             <Table.Cell>
               <Link href={transactionUrl(transaction.hash)} target="_blank">

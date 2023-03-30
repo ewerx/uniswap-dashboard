@@ -3,6 +3,7 @@ query Tokens(
   $skip: Int = 0
   $orderBy: Token_orderBy = totalValueLockedUSD
   $orderDirection: OrderDirection = desc
+  $tokenDayDataFirst: Int = 2
 ) {
   tokens(
     first: $first
@@ -15,5 +16,13 @@ query Tokens(
     name
     totalValueLockedUSD
     volumeUSD
+    tokenDayData(
+      first: $tokenDayDataFirst
+      orderBy: date
+      orderDirection: desc
+    ) {
+      date
+      priceUSD
+    }
   }
 }

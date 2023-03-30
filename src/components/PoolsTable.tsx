@@ -1,4 +1,5 @@
 import { PoolsDocument, PoolsQuery } from "@/gql/generated/graphql";
+import { poolsFromQuery } from "@/model/pool";
 import { formatCurrency } from "@/utils/format";
 import { tokenIconUrl } from "@/utils/tokenIcon";
 import { useQuery } from "@apollo/client";
@@ -12,17 +13,6 @@ import {
   Table,
 } from "@nextui-org/react";
 
-// from https://github.com/Uniswap/v3-info/blob/master/src/constants/index.ts
-const HIDDEN_POOLS = [
-  "0x86d257cdb7bc9c0df10e84c8709697f92770b335",
-  "0xf8dbd52488978a79dfe6ffbd81a01fc5948bf9ee",
-  "0x8fe8d9bb8eeba3ed688069c3d6b556c9ca258248",
-  "0xa850478adaace4c08fc61de44d8cf3b64f359bec",
-  "0x277667eb3e34f134adf870be9550e9f323d0dc24",
-  "0x8c0411f2ad5470a66cb2e9c64536cfb8dcd54d51",
-  "0x055284a4ca6532ecc219ac06b577d540c686669d",
-];
-
 const PoolsTable = () => {
   const { data, loading, fetchMore } = useQuery<PoolsQuery>(PoolsDocument, {
     variables: {
@@ -34,8 +24,7 @@ const PoolsTable = () => {
     },
   });
 
-  const pools =
-    data?.pools.filter((pool) => !HIDDEN_POOLS.includes(pool.id)) || [];
+  const pools = data ? poolsFromQuery(data) : [];
 
   const columns = [
     { uid: "rank", name: "" },
@@ -70,13 +59,13 @@ const PoolsTable = () => {
       </Table.Header>
       <Table.Body>
         {pools.map((pool, index) => (
-          <Table.Row key={pool.id}>
+          <Table.Row key={pool.address}>
             <Table.Cell>{index + 1}</Table.Cell>
             <Table.Cell>
               <Container gap={1}>
                 <Avatar.Group>
-                  <Avatar size="xs" src={tokenIconUrl(pool.token0.id)} />
-                  <Avatar size="xs" src={tokenIconUrl(pool.token1.id)} />
+                  <Avatar size="xs" src={tokenIconUrl(pool.token0.address)} />
+                  <Avatar size="xs" src={tokenIconUrl(pool.token1.address)} />
                 </Avatar.Group>
               </Container>
             </Table.Cell>
@@ -86,9 +75,7 @@ const PoolsTable = () => {
             <Table.Cell>
               {formatCurrency(pool.totalValueLockedUSD, "USD")}
             </Table.Cell>
-            <Table.Cell>
-              {formatCurrency(pool.poolDayData[1].volumeUSD, "USD")}
-            </Table.Cell>
+            <Table.Cell>{formatCurrency(pool.volume24hUSD, "USD")}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
