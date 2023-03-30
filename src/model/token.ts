@@ -34,7 +34,7 @@ export const tokensFromQuery = (data: TokensQuery) => {
     });
 };
 
-const get24hPriceChange = (
+export const get24hPriceChange = (
   tokenDayData: {
     priceUSD: number;
     date: number;
@@ -46,7 +46,7 @@ const get24hPriceChange = (
 
   const currentPrice = tokenDayData[0].priceUSD;
   const previousPrice = tokenDayData[1].priceUSD;
-  const priceChange = ((currentPrice - previousPrice) / previousPrice) * 100;
+  const priceChange = (currentPrice - previousPrice) / previousPrice;
 
   return priceChange;
 };

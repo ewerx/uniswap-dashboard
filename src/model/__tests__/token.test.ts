@@ -1,5 +1,5 @@
 import { TokensQuery } from "@/gql/generated/graphql";
-import { TokenData, tokensFromQuery } from "../token";
+import { get24hPriceChange, TokenData, tokensFromQuery } from "../token";
 import { loadFixture } from "../../../test-utils/loadFixture";
 
 describe("tokensFromQuery", () => {
@@ -19,10 +19,9 @@ describe("tokensFromQuery", () => {
       volumeUSD: 748252174791.3896565327100461371091,
       priceUSD: 1788.728001834675903937880302580104,
       priceChange24h:
-        ((1788.728001834675903937880302580104 -
+        (1788.728001834675903937880302580104 -
           1792.512497969295447432797145617816) /
-          1792.512497969295447432797145617816) *
-        100,
+        1792.512497969295447432797145617816,
     });
 
     expect(result[1]).toEqual<TokenData>({
@@ -37,5 +36,28 @@ describe("tokensFromQuery", () => {
           0.9999999999999999999999999999999999) *
         100,
     });
+  });
+});
+
+describe("get24hPriceChange", () => {
+  it("calculates the correct 24h price change percentage", () => {
+    const tokenDayData = [
+      { priceUSD: 120, date: 1638326400 }, // Most recent day
+      { priceUSD: 100, date: 1638240000 }, // Previous day
+    ];
+
+    const result = get24hPriceChange(tokenDayData);
+    const expected = 0.2; // 20% increase
+
+    expect(result).toBe(expected);
+  });
+
+  it("returns 0 if there is not enough data", () => {
+    const tokenDayData = [{ priceUSD: 120, date: 1638326400 }];
+
+    const result = get24hPriceChange(tokenDayData);
+    const expected = 0;
+
+    expect(result).toBe(expected);
   });
 });
