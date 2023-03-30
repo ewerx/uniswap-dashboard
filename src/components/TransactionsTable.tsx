@@ -107,8 +107,8 @@ const TransactionsTable = () => {
         )}
       </Table.Header>
       <Table.Body>
-        {transactions.map((transaction) => (
-          <Table.Row key={transaction.hash}>
+        {transactions.map((transaction, index) => (
+          <Table.Row key={index}>
             <Table.Cell>
               <TransactionTypeBadge type={transaction.type} />
             </Table.Cell>
