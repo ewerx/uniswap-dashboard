@@ -1,6 +1,7 @@
 # Uniswap Dashboard
 
-A React frontend visualizing data from the Uniswap V3 Subgraph.
+A React frontend visualizing data from the Uniswap V3 Subgraph. 
+This is just a demo project to get more familiar with Next.js and GraphQL code generation.
 
 ![Screenshot](screenshot.png)
 
@@ -38,7 +39,7 @@ yarn codegen
 
 ## Tech Stack
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/api-reference/create-next-app).
 
 ### Packages
 
